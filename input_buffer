@@ -1,0 +1,44 @@
+module input_buffer #(
+    parameter DATA_WIDTH = 32,  // 각 데이터의 폭 (부동소수점 32비트)
+    parameter CHANNELS = 2,     // 채널 수
+    parameter WIDTH = 5,        // 너비
+    parameter HEIGHT = 5        // 높이
+)(
+    input logic clk,                         // 클럭 신호
+    input logic rst_n,                       // 비동기 리셋 신호, active low
+    input logic [DATA_WIDTH-1:0] data0,      // 채널 0의 입력 데이터
+    input logic [DATA_WIDTH-1:0] data1,      // 채널 1의 입력 데이터
+    output logic valid,                      // 버퍼가 꽉 찬 상태 신호
+    output logic [DATA_WIDTH-1:0] buffer0 [0:HEIGHT-1][0:WIDTH-1], // 채널 0의 버퍼
+    output logic [DATA_WIDTH-1:0] buffer1 [0:HEIGHT-1][0:WIDTH-1]  // 채널 1의 버퍼
+);
+
+    // 내부 인덱스 레지스터
+    logic [2:0] row, col;  // 5x5 버퍼를 위해 인덱스 크기를 늘림
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            // 리셋 시 인덱스 및 유효 신호 초기화
+            row <= 0;
+            col <= 0;
+            valid <= 0;
+        end else if (!valid) begin
+            // 유효 신호가 0인 상태에서 데이터 저장
+            buffer0[row][col] <= data0;
+            buffer1[row][col] <= data1;
+
+            // 인덱스 증가
+            if (col < WIDTH - 1) begin
+                col <= col + 1;
+            end else begin
+                col <= 0;
+                if (row < HEIGHT - 1) begin
+                    row <= row + 1;
+                end else begin
+                    row <= 0;
+                    valid <= 1; // 모든 데이터가 입력되면 유효 신호를 1로 설정
+                end
+            end
+        end
+    end
+endmodule
