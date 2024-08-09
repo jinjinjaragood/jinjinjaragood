@@ -1,0 +1,170 @@
+`timescale 1ns / 1ps
+
+module tb_zero_padding_system;
+
+    // 파라미터
+    parameter DATA_WIDTH = 32;
+    parameter WIDTH = 5;
+    parameter HEIGHT = 5;
+    parameter PAD_WIDTH = 7;
+    parameter PAD_HEIGHT = 7;
+
+    // 입력 및 출력 레지스터 및 와이어
+    reg clk;
+    reg rst_n;
+    reg [DATA_WIDTH-1:0] data0;
+    reg [DATA_WIDTH-1:0] data1;
+    reg valid; // valid 신호를 reg로 선언
+    wire [DATA_WIDTH-1:0] buffer0 [0:HEIGHT-1][0:WIDTH-1];
+    wire [DATA_WIDTH-1:0] buffer1 [0:HEIGHT-1][0:WIDTH-1];
+    wire [DATA_WIDTH-1:0] padded0 [0:PAD_HEIGHT-1][0:PAD_WIDTH-1];
+    wire [DATA_WIDTH-1:0] padded1 [0:PAD_HEIGHT-1][0:PAD_WIDTH-1];
+    wire valid_padding; // 패딩 완료 신호
+
+    // 패치 관련 와이어 및 신호
+    wire [DATA_WIDTH-1:0] patch0 [0:2][0:2];
+    wire [DATA_WIDTH-1:0] patch1 [0:2][0:2];
+    wire valid_patch; // 패치 완료 신호
+
+    // 모듈 인스턴스화
+    input_buffer #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .WIDTH(WIDTH),
+        .HEIGHT(HEIGHT)
+    ) input_buffer_inst (
+        .clk(clk),
+        .rst_n(rst_n),
+        .data0(data0),
+        .data1(data1),
+        .valid(valid),
+        .buffer0(buffer0),
+        .buffer1(buffer1)
+    );
+
+    zero_padding_second #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .WIDTH(WIDTH),
+        .HEIGHT(HEIGHT),
+        .PAD_WIDTH(PAD_WIDTH),
+        .PAD_HEIGHT(PAD_HEIGHT)
+    ) zero_padding_inst (
+        .clk(clk),
+        .rst_n(rst_n),
+        .valid(valid),
+        .buffer0(buffer0),
+        .buffer1(buffer1),
+        .padded0(padded0),
+        .padded1(padded1),
+        .valid_padding(valid_padding)
+    );
+
+    threebythree #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .PAD_WIDTH(PAD_WIDTH),
+        .PAD_HEIGHT(PAD_HEIGHT)
+    ) threebythree_inst (
+        .clk(clk),
+        .rst_n(rst_n),
+        .valid_padding(valid_padding),
+        .padded0(padded0),
+        .padded1(padded1),
+        .patch0(patch0),
+        .patch1(patch1),
+        .valid_patch(valid_patch)
+    );
+
+    // 클럭 생성
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // 10ns 주기의 클럭
+    end
+
+    // 테스트 시퀀스
+    initial begin
+        // 초기화
+        rst_n = 0;
+        valid = 0;
+        data0 = 0;
+        data1 = 0;
+
+        // 리셋 해제
+        #10 rst_n = 1;
+
+        // 데이터 입력 시뮬레이션
+        data0 = 32'h3F800000; data1 = 32'h40000000; // 1.0, 2.0
+        #10; data0 = 32'h40400000; data1 = 32'h40800000; // 3.0, 4.0
+        #10; data0 = 32'h40A00000; data1 = 32'h40C00000; // 5.0, 6.0
+        #10; data0 = 32'h40E00000; data1 = 32'h41000000; // 7.0, 8.0
+        #10; data0 = 32'h41100000; data1 = 32'h41200000; // 9.0, 10.0
+
+        #10; data0 = 32'h41300000; data1 = 32'h41400000; // 11.0, 12.0
+        #10; data0 = 32'h41500000; data1 = 32'h41600000; // 13.0, 14.0
+        #10; data0 = 32'h41700000; data1 = 32'h41800000; // 15.0, 16.0
+        #10; data0 = 32'h41900000; data1 = 32'h41A00000; // 17.0, 18.0
+        #10; data0 = 32'h41B00000; data1 = 32'h41C00000; // 19.0, 20.0
+
+        #10; data0 = 32'h41D00000; data1 = 32'h41E00000; // 21.0, 22.0
+        #10; data0 = 32'h41F00000; data1 = 32'h42000000; // 23.0, 24.0
+        #10; data0 = 32'h42100000; data1 = 32'h42200000; // 25.0, 26.0
+        #10; data0 = 32'h42300000; data1 = 32'h42400000; // 27.0, 28.0
+        #10; data0 = 32'h42500000; data1 = 32'h42600000; // 29.0, 30.0
+
+        #10; data0 = 32'h42700000; data1 = 32'h42800000; // 31.0, 32.0
+        #10; data0 = 32'h42900000; data1 = 32'h42A00000; // 33.0, 34.0
+        #10; data0 = 32'h42B00000; data1 = 32'h42C00000; // 35.0, 36.0
+        #10; data0 = 32'h42D00000; data1 = 32'h42E00000; // 37.0, 38.0
+        #10; data0 = 32'h42F00000; data1 = 32'h43000000; // 39.0, 40.0
+
+        #10; data0 = 32'h43100000; data1 = 32'h43200000; // 41.0, 42.0
+        #10; data0 = 32'h43300000; data1 = 32'h43400000; // 43.0, 44.0
+        #10; data0 = 32'h43500000; data1 = 32'h43600000; // 45.0, 46.0
+        #10; data0 = 32'h43700000; data1 = 32'h43800000; // 47.0, 48.0
+        #10; data0 = 32'h43900000; data1 = 32'h43A00000; // 49.0, 50.0
+
+        // 유효 신호 설정
+        #10 valid = 1;
+
+        // 충분한 시간 대기 (패딩 작업 수행)
+        #2000; // 2000ns 대기
+
+        // 패딩 완료 신호 대기
+        wait(valid_padding);
+
+        // 패치 출력
+        patch_output;
+
+        // 시뮬레이션 종료
+        $finish;
+    end
+
+    // 패치 출력
+    task patch_output;
+        integer i, j;
+        reg [4:0] count;
+        begin
+            count = 0;
+            // 패치 0 데이터 출력
+            $display("Patch0:");
+            while (count < 25) begin
+                @(posedge clk);
+                $display("[%0d,%0d]: %h", count / 3, count % 3, patch0[count / 3][count % 3]);
+                count = count + 1;
+            end
+
+            // 패치 1 데이터 출력
+            count = 0;
+            $display("Patch1:");
+            while (count < 25) begin
+                @(posedge clk);
+                $display("[%0d,%0d]: %h", count / 3, count % 3, patch1[count / 3][count % 3]);
+                count = count + 1;
+            end
+        end
+    endtask
+
+    // 결과 모니터링
+    initial begin
+        $monitor("At time %0t, valid = %b, valid_padding = %b, valid_patch = %b", $time, valid, valid_padding, valid_patch);
+    end
+
+endmodule
