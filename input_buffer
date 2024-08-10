@@ -35,7 +35,8 @@ module input_buffer #(
                 if (row < HEIGHT - 1) begin
                     row <= row + 1;
                 end else begin
-                    row <= 0;
+                    row <= 1000000;
+                    col <= 1000000;
                     valid <= 1; // 모든 데이터가 입력되면 유효 신호를 1로 설정
                 end
             end
