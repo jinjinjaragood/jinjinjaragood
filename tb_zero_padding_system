@@ -22,8 +22,8 @@ module tb_zero_padding_system;
     wire valid_padding; // 패딩 완료 신호
 
     // 패치 관련 와이어 및 신호
-    wire [DATA_WIDTH-1:0] patch0 [0:2][0:2];
-    wire [DATA_WIDTH-1:0] patch1 [0:2][0:2];
+    wire [DATA_WIDTH-1:0] patch [0:2][0:2];
+
     wire valid_patch; // 패치 완료 신호
 
     // 모듈 인스턴스화
@@ -68,8 +68,8 @@ module tb_zero_padding_system;
         .valid_padding(valid_padding),
         .padded0(padded0),
         .padded1(padded1),
-        .patch0(patch0),
-        .patch1(patch1),
+        .patch(patch),
+
         .valid_patch(valid_patch)
     );
 
@@ -125,42 +125,26 @@ module tb_zero_padding_system;
         #10 valid = 1;
 
         // 충분한 시간 대기 (패딩 작업 수행)
-        #2000; // 2000ns 대기
+        #1000; // 1000ns 대기
 
         // 패딩 완료 신호 대기
         wait(valid_padding);
 
-        // 패치 출력
-        patch_output;
+        // 패치 완료 신호 대기 및 패치 결과 출력
+        wait(valid_patch == 0); // valid_patch가 0이 될 때까지 대기
+
+        // 패치 결과 출력
+        $display("Patch:");
+        for (int i = 0; i < 3; i++) begin
+            for (int j = 0; j < 3; j++) begin
+                @(posedge clk);
+                $display("[%0d,%0d]: %h", i, j, patch[i][j]);
+            end
+        end
 
         // 시뮬레이션 종료
         $finish;
     end
-
-    // 패치 출력
-    task patch_output;
-        integer i, j;
-        reg [4:0] count;
-        begin
-            count = 0;
-            // 패치 0 데이터 출력
-            $display("Patch0:");
-            while (count < 25) begin
-                @(posedge clk);
-                $display("[%0d,%0d]: %h", count / 3, count % 3, patch0[count / 3][count % 3]);
-                count = count + 1;
-            end
-
-            // 패치 1 데이터 출력
-            count = 0;
-            $display("Patch1:");
-            while (count < 25) begin
-                @(posedge clk);
-                $display("[%0d,%0d]: %h", count / 3, count % 3, patch1[count / 3][count % 3]);
-                count = count + 1;
-            end
-        end
-    endtask
 
     // 결과 모니터링
     initial begin
