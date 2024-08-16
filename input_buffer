@@ -74,15 +74,15 @@ module input_buffer #(
 );
 
     // 내부 인덱스 레지스터
-    logic [2:0] row, col;  // 높이에 맞게 인덱스 크기 설정
+    logic [3:0] row, col;  // 높이에 맞게 인덱스 크기 설정
 
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             // 리셋 시 인덱스 및 유효 신호 초기화
             row <= 0;
             col <= 0;
-            valid_in <= 0;
-        end else if (!valid_in) begin
+            valid_in <= 1;
+        end else if (valid_in) begin
             // 유효 신호가 0인 상태에서 데이터 저장
             buffer0[row][col] <= data0;
             buffer1[row][col] <= data1;
@@ -127,7 +127,7 @@ module input_buffer #(
                 end else begin
                     row <= 1000000;
                     col <= 1000000;
-                    valid_in <= 1; // 모든 데이터가 입력되면 유효 신호를 1로 설정
+                    valid_in <= 0; // 모든 데이터가 입력되면 유효 신호를 1로 설정
                 end
             end
         end
