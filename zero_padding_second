@@ -116,7 +116,7 @@ module zero_padding_second #(
                     padded31[i][j] <= 0;
                 end
             end
-        end else if (valid_in) begin
+        end else if (!valid_in) begin
             // 각 버퍼에서 데이터를 읽어와서 패딩된 버퍼에 저장
             for (i = 0; i < HEIGHT; i = i + 1) begin
                 for (j = 0; j < WIDTH; j = j + 1) begin
@@ -155,7 +155,7 @@ module zero_padding_second #(
                 end
             end
 
-            // 나머지 부분 제로로 채우기
+            // 나머지 부분 제로로 채우기 (사실상 필요 없지만 구조적으로 포함)
             for (i = 0; i < PAD_HEIGHT; i = i + 1) begin
                 for (j = 0; j < PAD_WIDTH; j = j + 1) begin
                     if (i < HEIGHT+2 && j < WIDTH+2) begin
