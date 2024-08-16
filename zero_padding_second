@@ -155,12 +155,12 @@ module zero_padding_second #(
                 end
             end
 
-            // 나머지 부분 제로로 채우기 (사실상 필요 없지만 구조적으로 포함)
+            // 나머지 부분 제로로 채우기
             for (i = 0; i < PAD_HEIGHT; i = i + 1) begin
                 for (j = 0; j < PAD_WIDTH; j = j + 1) begin
                     if (i < HEIGHT+2 && j < WIDTH+2) begin
                         // 이미 채워진 데이터
-                        // padded0[i][j] ~ padded31[i][j] 값은 위에서 설정됨
+                        
                     end else begin
                         // 나머지 부분 제로로 설정
                         padded0[i][j] <= 0;
