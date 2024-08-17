@@ -7,7 +7,7 @@ module zero_padding_end #(
 )(
     input logic clk,
     input logic rst_n,
-    input logic valiad_in,
+    input logic valid_in,
     input logic [DATA_WIDTH-1:0] buffer0  [0:HEIGHT-1][0:WIDTH-1],
     input logic [DATA_WIDTH-1:0] buffer1  [0:HEIGHT-1][0:WIDTH-1],
     input logic [DATA_WIDTH-1:0] buffer2  [0:HEIGHT-1][0:WIDTH-1],
