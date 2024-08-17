@@ -1245,33 +1245,6 @@ module threebythree_end #(
                         patch34_start <= 1;
                     end
                 end 
-            end                   
-                   
-   ///////////patch33///////////////////////////////////////////////////////////////   
-        end else if (patch33_start && !patch33_done) begin
-            if (row <= PAD_HEIGHT - 3 && col <= PAD_WIDTH - 3) begin
-                // 3x3 패치 추출
-                for (i = 0; i < 3; i = i + 1) begin
-                    for (j = 0; j < 3; j = j + 1) begin
-                        patch[i][j] <= padded33[row+i][col+j];
-                    end
-                end
-
-                // 슬라이딩
-                col <= col + 1;
-                
-                // 슬라이딩
-                
-                if(col == 5) begin
-                    col <= 0;
-                    row <= row + 1;
-                    if(row == 7) begin
-                        row <= 0;
-                        col <= 0;
-                        patch33_done <= 1;
-                        patch34_start <= 1;
-                    end
-                end 
             end                                       
    ///////////patch34///////////////////////////////////////////////////////////////   
         end else if (patch34_start && !patch34_done) begin
@@ -1429,7 +1402,7 @@ module threebythree_end #(
                 end 
             end
                  
-  ///////////patch24///////////////////////////////////////////////////////////////   
+  ///////////patch40///////////////////////////////////////////////////////////////   
         end else if (patch40_start && !patch40_done) begin
             if (row <= PAD_HEIGHT - 3 && col <= PAD_WIDTH - 3) begin
                 // 3x3 패치 추출
@@ -1455,7 +1428,7 @@ module threebythree_end #(
                 end 
             end
                           
-  ///////////patch25///////////////////////////////////////////////////////////////   
+  ///////////patch41///////////////////////////////////////////////////////////////   
         end else if (patch41_start && !patch41_done) begin
             if (row <= PAD_HEIGHT - 3 && col <= PAD_WIDTH - 3) begin
                 // 3x3 패치 추출
@@ -1481,7 +1454,7 @@ module threebythree_end #(
                 end 
             end
 
-  ///////////patch26///////////////////////////////////////////////////////////////   
+  ///////////patch42///////////////////////////////////////////////////////////////   
         end else if (patch42start && !patch42_done) begin
             if (row <= PAD_HEIGHT - 3 && col <= PAD_WIDTH - 3) begin
                 // 3x3 패치 추출
