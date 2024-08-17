@@ -324,6 +324,39 @@ module zero_padding_end #(
                         padded29[i][j] <= 0;
                         padded30[i][j] <= 0;
                         padded31[i][j] <= 0;
+                        padded32[i][j] <= 0;
+                        padded33[i][j] <= 0;
+                        padded34[i][j] <= 0;
+                        padded35[i][j] <= 0;
+                        padded36[i][j] <= 0;
+                        padded37[i][j] <= 0;
+                        padded38[i][j] <= 0;
+                        padded39[i][j] <= 0;
+                        padded40[i][j] <= 0;
+                        padded41[i][j] <= 0;
+                        padded42[i][j] <= 0;
+                        padded43[i][j] <= 0;
+                        padded44[i][j] <= 0;
+                        padded45[i][j] <= 0;
+                        padded46[i][j] <= 0;
+                        padded47[i][j] <= 0;
+                        padded48[i][j] <= 0;
+                        padded49[i][j] <= 0;
+                        padded50[i][j] <= 0;
+                        padded51[i][j] <= 0;
+                        padded52[i][j] <= 0;
+                        padded53[i][j] <= 0;
+                        padded54[i][j] <= 0;
+                        padded55[i][j] <= 0;
+                        padded56[i][j] <= 0;
+                        padded57[i][j] <= 0;
+                        padded58[i][j] <= 0;
+                        padded59[i][j] <= 0;
+                        padded60[i][j] <= 0;
+                        padded61[i][j] <= 0;
+                        padded62[i][j] <= 0;
+                        padded63[i][j] <= 0;
+
                     end
                 end
             end
