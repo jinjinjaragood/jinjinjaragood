@@ -1,4 +1,6 @@
-module input_buffer_end #(
+`timescale 1ns / 1ps
+
+module input_buffer #(
     parameter DATA_WIDTH = 32,  // 각 데이터의 폭 (부동소수점 32비트)
     parameter CHANNELS = 64 ,   // 채널 수 (32개로 설정)
     parameter WIDTH = 6,       // 너비 (13으로 설정)
@@ -70,7 +72,7 @@ module input_buffer_end #(
     input logic [DATA_WIDTH-1:0] data60,  // 채널 60의 입력 데이터
     input logic [DATA_WIDTH-1:0] data61,  // 채널 61의 입력 데이터
     input logic [DATA_WIDTH-1:0] data62,  // 채널 62의 입력 데이터
-    input logic [DATA_WIDTH-1:0] data63   // 채널 63의 입력 데이터
+    input logic [DATA_WIDTH-1:0] data63,   // 채널 63의 입력 데이터
     
     output logic valid_out,                   // 버퍼가 꽉 찬 상태 신호
     
@@ -105,7 +107,7 @@ module input_buffer_end #(
     output logic [DATA_WIDTH-1:0] buffer28 [0:HEIGHT-1][0:WIDTH-1], // 채널 28의 버퍼
     output logic [DATA_WIDTH-1:0] buffer29 [0:HEIGHT-1][0:WIDTH-1], // 채널 29의 버퍼
     output logic [DATA_WIDTH-1:0] buffer30 [0:HEIGHT-1][0:WIDTH-1], // 채널 30의 버퍼
-    output logic [DATA_WIDTH-1:0] buffer31 [0:HEIGHT-1][0:WIDTH-1]  // 채널 31의 버퍼
+    output logic [DATA_WIDTH-1:0] buffer31 [0:HEIGHT-1][0:WIDTH-1],  // 채널 31의 버퍼
     output logic [DATA_WIDTH-1:0] buffer32 [0:HEIGHT-1][0:WIDTH-1], // 채널 32의 버퍼
     output logic [DATA_WIDTH-1:0] buffer33 [0:HEIGHT-1][0:WIDTH-1], // 채널 33의 버퍼
     output logic [DATA_WIDTH-1:0] buffer34 [0:HEIGHT-1][0:WIDTH-1], // 채널 34의 버퍼
