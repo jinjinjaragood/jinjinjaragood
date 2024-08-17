@@ -1,4 +1,6 @@
-module zero_padding_end #(
+`timescale 1ns / 1ps
+
+module zero_padding #(
     parameter DATA_WIDTH = 32,
     parameter WIDTH = 6,
     parameter HEIGHT = 8,
